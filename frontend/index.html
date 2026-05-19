@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Портал обращений граждан</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚖</span>
+        <span class="logo-text">Портал обращений граждан</span>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-btn active" data-tab="home">Главная</button>
+        <button class="nav-btn" data-tab="appeal">Написать обращение</button>
+      </nav>
+      <a href="/admin" class="admin-link">Для сотрудников →</a>
+    </div>
+  </header>
+
+  <!-- Лэндинг -->
+  <main id="tab-home" class="tab-content active">
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <p class="hero-label">Официальный портал</p>
+        <h1 class="hero-title">Ваш голос<br/>важен</h1>
+        <p class="hero-desc">Здесь каждый гражданин может направить обращение в органы власти. Мы рассматриваем каждое обращение в установленные законом сроки.</p>
+        <button class="btn-primary" id="go-to-appeal">Написать обращение</button>
+      </div>
+      <div class="hero-visual">
+        <div class="visual-card vc1">
+          <span class="vc-num">30</span>
+          <span class="vc-label">дней на ответ</span>
+        </div>
+        <div class="visual-card vc2">
+          <span class="vc-num">100%</span>
+          <span class="vc-label">рассматриваются</span>
+        </div>
+        <div class="visual-card vc3">
+          <span class="vc-num">24/7</span>
+          <span class="vc-label">приём обращений</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps-section">
+      <div class="section-inner">
+        <h2 class="section-title">Как это работает</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">01</span>
+            <h3>Заполните форму</h3>
+            <p>Укажите ваши данные и подробно опишите суть обращения</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">02</span>
+            <h3>Отправьте обращение</h3>
+            <p>Нажмите кнопку отправки — ваше обращение поступит в систему немедленно</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">03</span>
+            <h3>Получите ответ</h3>
+            <p>Ответ придёт на указанный e-mail в течение 30 рабочих дней</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Окно обращения -->
+  <main id="tab-appeal" class="tab-content">
+    <section class="form-section">
+      <div class="form-container">
+        <h2 class="form-title">Написать обращение</h2>
+        <p class="form-subtitle">Все поля обязательны для заполнения</p>
+
+        <div id="form-success" class="form-success hidden">
+          <span class="success-icon">✓</span>
+          <h3>Обращение отправлено!</h3>
+          <p>Номер вашего обращения: <strong id="appeal-id"></strong></p>
+          <button class="btn-secondary" id="new-appeal-btn">Новое обращение</button>
+        </div>
+
+        <form id="appeal-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="full_name">ФИО <span class="required">*</span></label>
+              <input type="text" id="full_name" name="full_name" placeholder="Иванов Иван Иванович" />
+              <span class="field-error" id="err-full_name"></span>
+            </div>
+          </div>
+
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="phone">Телефон <span class="required">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___ __-__" maxlength="18" />
+              <span class="field-error" id="err-phone"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Электронная почта <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="example@mail.ru" />
+              <span class="field-error" id="err-email"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="subject">Краткая тема <span class="required">*</span></label>
+              <input type="text" id="subject" name="subject" placeholder="Укажите тему обращения" />
+              <span class="field-error" id="err-subject"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="body">Текст обращения <span class="required">*</span></label>
+              <textarea id="body" name="body" rows="7" placeholder="Подробно изложите суть вашего обращения..."></textarea>
+              <span class="field-error" id="err-body"></span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="submit-btn">Отправить обращение</button>
+          </div>
+          <div id="form-error" class="form-error-global hidden"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 Портал обращений граждан. Все права защищены.</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

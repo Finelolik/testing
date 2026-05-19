@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Панель администратора</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+
+  <!-- логин -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-box">
+      <div class="login-logo">⚖</div>
+      <h1 class="login-title">Вход для сотрудников</h1>
+      <p class="login-sub">Панель администратора</p>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="username">Логин</label>
+          <input type="text" id="username" placeholder="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <div id="login-error" class="login-error hidden"></div>
+        <button type="submit" class="btn-login">Войти</button>
+      </form>
+      <a href="/" class="back-link">← На главную</a>
+    </div>
+  </div>
+
+  <!-- основная панель -->
+  <div id="admin-panel" class="admin-panel hidden">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-icon">⚖</span>
+        <span>Администратор</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="sidebar-btn active" data-view="active">Входящие</button>
+        <button class="sidebar-btn" data-view="archived">Архив</button>
+      </nav>
+      <button class="btn-logout" id="logout-btn">Выйти</button>
+    </aside>
+
+    <div class="panel-main">
+      <div class="panel-header">
+        <h2 id="panel-title">Входящие обращения</h2>
+        <span id="appeals-count" class="count-badge">0</span>
+      </div>
+
+      <div id="appeals-list" class="appeals-list">
+        <div class="loading-state">Загрузка...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- модальное окно (заявка) -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-header">
+        <span class="modal-id" id="modal-id"></span>
+        <h3 class="modal-subject" id="modal-subject"></h3>
+      </div>
+      <div class="modal-meta">
+        <div class="meta-row">
+          <span class="meta-label">ФИО</span>
+          <span class="meta-value" id="modal-name"></span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Телефон</span>
+          <span class="meta-value" id="modal-phone"></span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">E-mail</span>
+          <span class="meta-value" id="modal-email"></span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Дата</span>
+          <span class="meta-value" id="modal-date"></span>
+        </div>
+      </div>
+      <div class="modal-body-text" id="modal-body"></div>
+      <div class="modal-actions" id="modal-actions">
+        <button class="btn-archive" id="btn-archive">В архив</button>
+        <button class="btn-delete" id="btn-delete">Удалить</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
