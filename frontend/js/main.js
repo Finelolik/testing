@@ -1,6 +1,6 @@
-/* ========================
-   TAB NAVIGATION
-======================== */
+/* ======
+   навигация
+====== */
 const navBtns = document.querySelectorAll('.nav-btn');
 const tabs    = document.querySelectorAll('.tab-content');
 
@@ -13,16 +13,16 @@ navBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset
 
 document.getElementById('go-to-appeal').addEventListener('click', () => switchTab('appeal'));
 
-/* ========================
-   PHONE MASK  +7 (xxx) xxx xx-xx
-======================== */
+/* ======
+   маска для телефона
+====== */
 const phoneInput = document.getElementById('phone');
 
 phoneInput.addEventListener('input', function (e) {
   const selStart = this.selectionStart;
   let digits = this.value.replace(/\D/g, '');
 
-  // Force start with 7
+  // начало с 7
   if (digits.startsWith('8')) digits = '7' + digits.slice(1);
   if (!digits.startsWith('7')) digits = '7' + digits;
   digits = digits.slice(0, 11);
@@ -46,9 +46,9 @@ phoneInput.addEventListener('focus', function () {
   if (!this.value) this.value = '+7';
 });
 
-/* ========================
-   FORM VALIDATION & SUBMIT
-======================== */
+/* ======
+   валидация и подвержд
+====== */
 const form      = document.getElementById('appeal-form');
 const successEl = document.getElementById('form-success');
 const globalErr = document.getElementById('form-error');
@@ -128,7 +128,6 @@ form.addEventListener('submit', async function (e) {
     const json = await res.json();
 
     if (!res.ok) {
-      // Handle validation errors from backend
       if (json.detail && Array.isArray(json.detail)) {
         json.detail.forEach(err => {
           const field = err.loc?.[err.loc.length - 1];
@@ -141,7 +140,7 @@ form.addEventListener('submit', async function (e) {
       return;
     }
 
-    // Success
+    // удачно
     document.getElementById('appeal-id').textContent = `#${json.id}`;
     form.classList.add('hidden');
     successEl.classList.remove('hidden');

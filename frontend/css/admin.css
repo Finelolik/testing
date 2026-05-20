@@ -26,7 +26,7 @@ body {
 .hidden { display: none !important; }
 
 /* ======
-  Логирование
+  Логин
 ====== */
 .login-screen {
   min-height: 100vh;
@@ -527,7 +527,7 @@ body {
 .btn-primary:hover { background: #d9a84a; }
 
 /* ======
-   Поиск по ID
+   Поиск по id
 ====== */
 .search-by-id {
   display: flex;
@@ -553,14 +553,14 @@ body {
   box-shadow: 0 0 0 3px rgba(200,151,58,0.15);
 }
 
-/* Убираем стрелки у number-поля */
+/* без стрелок у number */
 .search-by-id input::-webkit-outer-spin-button,
 .search-by-id input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 .search-by-id input[type=number] {
-  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 @media (max-width: 640px) {
@@ -623,7 +623,7 @@ body {
 
 
 
-/* ====== ПЛАНШЕТЫ (768–1023px) ====== */
+/* < 1024 */
 @media (max-width: 1023px) {
   :root { --sidebar-w: 180px; }
   .panel-main { padding: 1.5rem; }
@@ -632,7 +632,7 @@ body {
   .btn-logout   { margin: 1rem 0.75rem; padding: 0.55rem 0.75rem; }
 }
 
-/* ====== МОБИЛЬНЫЕ (< 768px) ====== */
+/* < 768 */
 @media (max-width: 767px) {
   /* Кнопка меню */
   .btn-menu {
@@ -648,7 +648,7 @@ body {
     cursor: pointer;
   }
 
-  /* Sidebar — выдвижной drawer */
+  /* выдвижной сайдбар */
   .sidebar {
     position: fixed;
     top: 0; left: 0;
@@ -684,7 +684,7 @@ body {
   }
   .panel-header h2 { font-size: 1.25rem; flex: 1; }
 
-  /* Поиск по ID — на всю ширину */
+  /* Поиск по id на всю ширину */
   .search-by-id {
     width: 100%;
     margin-left: 0;
@@ -692,7 +692,7 @@ body {
   }
   .search-by-id input { flex: 1; min-height: 44px; }
 
-  /* Карточки обращений — вертикально */
+  /* Карточки вертикально */
   .appeal-row {
     flex-direction: column;
     align-items: flex-start;
@@ -704,13 +704,13 @@ body {
     width: 100%;
     white-space: normal;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.35;
   }
   .appeal-date {
-    display: block !important; /* отмена старого display:none */
+    display: block !important;
     font-size: 0.78rem;
     color: var(--clr-muted);
   }
@@ -721,7 +721,7 @@ body {
     min-height: 44px;
   }
 
-  /* Пагинация — крупнее для пальца */
+  /* пагинация крупнее */
   .pagination { gap: 0.5rem; margin-top: 1.25rem; }
   .btn-page {
     min-width: 44px;
@@ -729,7 +729,7 @@ body {
     padding: 0.6rem 1.1rem;
   }
 
-  /* Модальное окно — почти на весь экран */
+  /* Модальное больше */
   .modal-overlay { padding: 0.5rem; }
   .modal {
     max-width: 100%;
@@ -741,12 +741,12 @@ body {
   .modal-actions { flex-direction: column; }
   .modal-actions button { width: 100%; min-height: 44px; }
 
-  /* Форма админов */
+  /* форма админок */
   .admins-form { padding: 1.25rem; }
   .admins-form input { min-height: 44px; }
 }
 
-/* Скрыть кнопку меню на ПК */
+/* скрыть кнопку меню на пк */
 @media (min-width: 768px) {
   .btn-menu { display: none; }
 }

@@ -1,6 +1,3 @@
-/* ======
-   STATE
-====== */
 let token       = localStorage.getItem('admin_token') || null;
 let currentView = 'active';
 let openAppeal  = null;
@@ -12,7 +9,7 @@ const loginScreen = document.getElementById('login-screen');
 const adminPanel  = document.getElementById('admin-panel');
 
 /* ======
-   AUTH INIT
+   аутентификация
 ====== */
 function showPanel() {
   loginScreen.classList.add('hidden');
@@ -32,7 +29,7 @@ if (token) {
 }
 
 /* ======
-   LOGIN FORM
+   логин
 ====== */
 document.getElementById('login-form').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -84,7 +81,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
 document.getElementById('logout-btn').addEventListener('click', showLogin);
 
 /* ======
-   SIDEBAR NAVIGATION
+   сайдбар
 ====== */
 document.querySelectorAll('.sidebar-btn').forEach(btn => {
   btn.addEventListener('click', function () {
@@ -113,7 +110,7 @@ document.querySelectorAll('.sidebar-btn').forEach(btn => {
 });
 
 /* ======
-   PAGINATION
+   паинация
 ====== */
 document.getElementById('btn-prev').addEventListener('click', () => {
   if (currentPage > 1) { currentPage--; loadAppeals(currentView); }
@@ -132,7 +129,7 @@ function updatePagination() {
 
 
 /* ======
-   LOAD APPEALS
+   гет обращения
 ====== */
 async function loadAppeals(status) {
   const list = document.getElementById('appeals-list');
@@ -189,7 +186,7 @@ async function loadAppeals(status) {
 }
 
 /* ======
-   ПОИСК И ОТКРЫТИЕ ПО ID
+   поиск по id
 ====== */
 document.getElementById('btn-search-id').addEventListener('click', () => {
   const input = document.getElementById('search-id');
@@ -204,7 +201,7 @@ document.getElementById('btn-search-id').addEventListener('click', () => {
   input.value = '';
 });
 
-// Открытие по нажатию Enter в поле
+// Открытие по enter
 document.getElementById('search-id').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     document.getElementById('btn-search-id').click();
@@ -212,7 +209,7 @@ document.getElementById('search-id').addEventListener('keypress', (e) => {
 });
 
 /* ======
-   MODAL
+   модалка
 ====== */
 const modalOverlay = document.getElementById('modal-overlay');
 
@@ -233,7 +230,7 @@ async function openModal(id) {
     document.getElementById('modal-date').textContent    = formatDate(a.created_at);
     document.getElementById('modal-body').textContent    = a.body;
 
-    // Hide archive button if already archived
+    // убрать архив если уже в нем
     const modalActions = document.getElementById('modal-actions');
     const archiveBtn   = document.getElementById('btn-archive');
     archiveBtn.style.display = a.status === 'archived' ? 'none' : '';
@@ -403,7 +400,7 @@ document.getElementById('create-admin-btn').addEventListener('click', async () =
 });
 
 
-/* ====== МОБИЛЬНОЕ МЕНЮ ====== */
+/* МОБИЛЬНОЕ МЕНЮ */
 const menuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.querySelector('.sidebar');
 const overlay = document.getElementById('sidebar-overlay');
@@ -422,7 +419,7 @@ function closeMenu() {
 menuBtn.addEventListener('click', openMenu);
 overlay.addEventListener('click', closeMenu);
 
-// Закрывать меню при выборе пункта (на мобильных)
+// Закрывать при выборе пункта
 document.querySelectorAll('.sidebar-btn, .btn-logout').forEach(btn => {
   btn.addEventListener('click', () => {
     if (window.innerWidth <= 767) closeMenu();
