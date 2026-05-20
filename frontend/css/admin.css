@@ -455,3 +455,57 @@ body {
   .appeal-date { display: none; }
   .modal-meta { grid-template-columns: 1fr; }
 }
+
+/* ======
+   изм админок
+====== */
+.admins-form {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admins-form h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--clr-primary);
+  margin-bottom: 1rem;
+}
+
+.admins-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.admins-form label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--clr-primary);
+  margin-bottom: 0.4rem;
+}
+
+.admins-form input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius);
+  background: var(--clr-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admins-form input:focus {
+  outline: none;
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200,151,58,0.15);
+}
+
+.admins-form .btn-primary {
+  margin-top: 0.5rem;
+}

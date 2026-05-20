@@ -43,6 +43,7 @@
       <nav class="sidebar-nav">
         <button class="sidebar-btn active" data-view="active">Входящие</button>
         <button class="sidebar-btn" data-view="archived">Архив</button>
+        <button class="sidebar-btn" data-view="admins">Администраторы</button>
       </nav>
       <button class="btn-logout" id="logout-btn">Выйти</button>
     </aside>
@@ -55,6 +56,23 @@
 
       <div id="appeals-list" class="appeals-list">
         <div class="loading-state">Загрузка...</div>
+      </div>
+      <div id="admins-panel" class="hidden">
+        <div class="admins-form">
+          <h3>Новый администратор</h3>
+          <div class="form-group">
+            <label>Логин</label>
+            <input type="text" id="new-admin-username" placeholder="username" />
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="new-admin-password" placeholder="••••••••" />
+          </div>
+          <button class="btn-primary" id="create-admin-btn">Создать</button>
+          <div id="admins-form-error" class="login-error hidden"></div>
+        </div>
+
+        <div id="admins-list" class="appeals-list"></div>
       </div>
     </div>
   </div>

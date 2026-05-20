@@ -10,6 +10,7 @@ from .database import init_db, get_db, DB_PATH
 from .auth import verify_password, create_access_token, ensure_default_admin
 from .models import AdminLogin, TokenResponse
 from .appeals import router as appeals_router
+from .admins import router as admins_router
 
 import os
 
@@ -36,7 +37,7 @@ app.add_middleware(
 )
 
 app.include_router(appeals_router)
-
+app.include_router(admins_router)
 
 @app.post("/api/admin/login", response_model=TokenResponse)
 async def admin_login(data: AdminLogin, db=Depends(get_db)):
