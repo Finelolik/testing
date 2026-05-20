@@ -189,6 +189,29 @@ async function loadAppeals(status) {
 }
 
 /* ======
+   ПОИСК И ОТКРЫТИЕ ПО ID
+====== */
+document.getElementById('btn-search-id').addEventListener('click', () => {
+  const input = document.getElementById('search-id');
+  const id = parseInt(input.value, 10);
+
+  if (!id || id < 1) {
+    alert('Введите корректный ID обращения');
+    return;
+  }
+
+  openModal(id);
+  input.value = '';
+});
+
+// Открытие по нажатию Enter в поле
+document.getElementById('search-id').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    document.getElementById('btn-search-id').click();
+  }
+});
+
+/* ======
    MODAL
 ====== */
 const modalOverlay = document.getElementById('modal-overlay');
