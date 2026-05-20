@@ -13,3 +13,6 @@ __pycache__/
 
 # Бэкапы
 work-bak/
+
+run.sh
+favicon.ico
