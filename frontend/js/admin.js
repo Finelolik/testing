@@ -401,3 +401,30 @@ document.getElementById('create-admin-btn').addEventListener('click', async () =
     loadAdmins();
   } catch { alert('Ошибка при создании'); }
 });
+
+
+/* ====== МОБИЛЬНОЕ МЕНЮ ====== */
+const menuBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+
+function openMenu() {
+  sidebar.classList.add('open');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+menuBtn.addEventListener('click', openMenu);
+overlay.addEventListener('click', closeMenu);
+
+// Закрывать меню при выборе пункта (на мобильных)
+document.querySelectorAll('.sidebar-btn, .btn-logout').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 767) closeMenu();
+  });
+});
