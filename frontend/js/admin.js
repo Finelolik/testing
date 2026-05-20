@@ -241,6 +241,7 @@ function formatDate(str) {
   const d = new Date(str.replace(' ', 'T') + (str.includes('T') ? '' : 'Z'));
   return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' })
        + ' ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+}
 
 /* ======
    изм админок
@@ -340,4 +341,3 @@ document.getElementById('create-admin-btn').addEventListener('click', async () =
     loadAdmins();
   } catch { alert('Ошибка при создании'); }
 });
-}
