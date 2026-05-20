@@ -31,7 +31,7 @@ app = FastAPI(title="Портал обращений граждан", lifespan=l
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://studvpn.alwaysdata.com"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
