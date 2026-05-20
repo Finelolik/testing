@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 import os
 
@@ -9,14 +9,14 @@ import bcrypt
 
 from .database import get_db
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-only-for-dev")
+SECRET_KEY = os.environ["SECRET_KEY"]
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY должна быть задана в переменных окружения (.env)")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/admin/login")
-
-
-import bcrypt
 
 def hash_password(password: str) -> str:
     # bcrypt работает с bytes, обрезаем до 72 байт на всякий случай
@@ -34,7 +34,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode["exp"] = expire
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 

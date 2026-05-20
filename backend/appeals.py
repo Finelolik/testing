@@ -27,7 +27,7 @@ async def list_appeals(
 ):
     cursor = await db.execute(
         """SELECT * FROM appeals WHERE status = ?
-           ORDER BY created_at DESC LIMIT ? OFFSET ?""",
+           ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?""",
         (status, limit, skip),
     )
     rows = await cursor.fetchall()

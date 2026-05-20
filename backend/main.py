@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import aiosqlite
 from contextlib import asynccontextmanager
 
@@ -11,11 +15,6 @@ from .auth import verify_password, create_access_token, ensure_default_admin
 from .models import AdminLogin, TokenResponse
 from .appeals import router as appeals_router
 from .admins import router as admins_router
-
-import os
-
-from dotenv import load_dotenv
-load_dotenv()
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
