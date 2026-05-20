@@ -4,7 +4,10 @@
 let token       = localStorage.getItem('admin_token') || null;
 let currentView = 'active';
 let openAppeal  = null;
+let currentPage = 1;
+let totalItems  = 0;
 
+const itemsPerPage = 20;
 const loginScreen = document.getElementById('login-screen');
 const adminPanel  = document.getElementById('admin-panel');
 
@@ -88,17 +91,20 @@ document.querySelectorAll('.sidebar-btn').forEach(btn => {
     document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
     currentView = this.dataset.view;
+    currentPage = 1;   // сброс на первую страницу при смене вкладки
 
     if (currentView === 'admins') {
       document.getElementById('appeals-list').classList.add('hidden');
       document.getElementById('admins-panel').classList.remove('hidden');
       document.getElementById('panel-title').textContent = 'Администраторы';
       document.getElementById('appeals-count').classList.add('hidden');
+      document.getElementById('pagination').classList.add('hidden');
       loadAdmins();
     } else {
       document.getElementById('appeals-list').classList.remove('hidden');
       document.getElementById('admins-panel').classList.add('hidden');
       document.getElementById('appeals-count').classList.remove('hidden');
+      document.getElementById('pagination').classList.remove('hidden');
       document.getElementById('panel-title').textContent =
         currentView === 'active' ? 'Входящие обращения' : 'Архив обращений';
       loadAppeals(currentView);
@@ -107,25 +113,54 @@ document.querySelectorAll('.sidebar-btn').forEach(btn => {
 });
 
 /* ======
+   PAGINATION
+====== */
+document.getElementById('btn-prev').addEventListener('click', () => {
+  if (currentPage > 1) { currentPage--; loadAppeals(currentView); }
+});
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (currentPage * itemsPerPage < totalItems) { currentPage++; loadAppeals(currentView); }
+});
+
+function updatePagination() {
+  const start = totalItems === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+  const end   = Math.min(currentPage * itemsPerPage, totalItems);
+  document.getElementById('page-info').textContent = `${start} – ${end} из ${totalItems}`;
+  document.getElementById('btn-prev').disabled = currentPage === 1;
+  document.getElementById('btn-next').disabled = end >= totalItems;
+}
+
+
+/* ======
    LOAD APPEALS
 ====== */
 async function loadAppeals(status) {
   const list = document.getElementById('appeals-list');
   list.innerHTML = '<div class="loading-state">Загрузка...</div>';
 
+  const skip = (currentPage - 1) * itemsPerPage;
+
   try {
-    const res = await fetch(`/api/appeals/?status=${status}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
+    const [res, countRes] = await Promise.all([
+      fetch(`/api/appeals/?status=${status}&skip=${skip}&limit=${itemsPerPage}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      }),
+      fetch(`/api/appeals/count?status=${status}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      }),
+    ]);
 
     if (res.status === 401) { showLogin(); return; }
 
     const appeals = await res.json();
+    const { total } = await countRes.json();
+    totalItems = total;
 
-    document.getElementById('appeals-count').textContent = appeals.length;
+    document.getElementById('appeals-count').textContent = total;
 
     if (appeals.length === 0) {
       list.innerHTML = '<div class="empty-state">Нет обращений</div>';
+      updatePagination();
       return;
     }
 
@@ -145,6 +180,8 @@ async function loadAppeals(status) {
     list.querySelectorAll('.btn-open').forEach(btn => {
       btn.addEventListener('click', () => openModal(Number(btn.dataset.id)));
     });
+
+    updatePagination();
 
   } catch {
     list.innerHTML = '<div class="empty-state">Ошибка загрузки данных</div>';

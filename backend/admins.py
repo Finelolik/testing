@@ -19,8 +19,10 @@ class AdminUpdate(BaseModel):
 
 
 @router.get("/", dependencies=[Depends(get_current_admin)])
-async def list_admins(db=Depends(get_db)):
-    cursor = await db.execute("SELECT id, username FROM admins")
+async def list_admins(skip: int = 0, limit: int = 50, db=Depends(get_db)):
+    cursor = await db.execute(
+        "SELECT id, username FROM admins LIMIT ? OFFSET ?", (limit, skip)
+    )
     rows = await cursor.fetchall()
     return [dict(r) for r in rows]
 

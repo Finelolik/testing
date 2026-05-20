@@ -19,13 +19,27 @@ async def create_appeal(appeal: AppealCreate, db=Depends(get_db)):
 
 
 @router.get("/", dependencies=[Depends(get_current_admin)])
-async def list_appeals(status: str = "active", db=Depends(get_db)):
+async def list_appeals(
+    status: str = "active",
+    skip: int = 0,
+    limit: int = 20,
+    db=Depends(get_db),
+):
     cursor = await db.execute(
-        "SELECT * FROM appeals WHERE status = ? ORDER BY created_at DESC",
-        (status,),
+        """SELECT * FROM appeals WHERE status = ?
+           ORDER BY created_at DESC LIMIT ? OFFSET ?""",
+        (status, limit, skip),
     )
     rows = await cursor.fetchall()
     return [dict(r) for r in rows]
+
+@router.get("/count", dependencies=[Depends(get_current_admin)])
+async def count_appeals(status: str = "active", db=Depends(get_db)):
+    cursor = await db.execute(
+        "SELECT COUNT(*) FROM appeals WHERE status = ?", (status,)
+    )
+    row = await cursor.fetchone()
+    return {"total": row[0]}
 
 
 @router.get("/{appeal_id}", dependencies=[Depends(get_current_admin)])
