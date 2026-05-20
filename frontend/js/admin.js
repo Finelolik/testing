@@ -241,11 +241,11 @@ function formatDate(str) {
   const d = new Date(str.replace(' ', 'T') + (str.includes('T') ? '' : 'Z'));
   return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' })
        + ' ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
-}
 
 /* ======
    изм админок
 ====== */
+
 async function loadAdmins() {
   const list = document.getElementById('admins-list');
   list.innerHTML = '<div class="loading-state">Загрузка...</div>';
@@ -340,3 +340,4 @@ document.getElementById('create-admin-btn').addEventListener('click', async () =
     loadAdmins();
   } catch { alert('Ошибка при создании'); }
 });
+}
