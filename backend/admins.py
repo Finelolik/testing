@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from pydantic import BaseModel
 from typing import Optional
 import logging
+import os
 
 from .database import get_db
 from .auth import get_current_admin, hash_password
-import os
+from .limiter import limiter
 
 router = APIRouter(prefix="/api/admins", tags=["admins"])
 security_logger = logging.getLogger("appeals_api.security")
@@ -18,7 +19,8 @@ class AdminUpdate(BaseModel):
     password: str
 
 @router.get("/", dependencies=[Depends(get_current_admin)])
-async def list_admins(skip: int = 0, limit: int = 50, db=Depends(get_db)):
+@limiter.limit("60/minute")
+async def list_admins(request: Request, skip: int = 0, limit: int = 50, db=Depends(get_db)):
     cursor = await db.execute(
         "SELECT id, username FROM admins ORDER BY id LIMIT ? OFFSET ?", (limit, skip)
     )
@@ -26,7 +28,8 @@ async def list_admins(skip: int = 0, limit: int = 50, db=Depends(get_db)):
     return [dict(r) for r in rows]
 
 @router.post("/", dependencies=[Depends(get_current_admin)], status_code=201)
-async def create_admin(data: AdminCreate, db=Depends(get_db)):
+@limiter.limit("10/minute")
+async def create_admin(request: Request, data: AdminCreate, db=Depends(get_db)):
     cursor = await db.execute("SELECT id FROM admins WHERE username = ?", (data.username,))
     existing = await cursor.fetchone()
     if existing:
@@ -41,7 +44,8 @@ async def create_admin(data: AdminCreate, db=Depends(get_db)):
     return {"message": "Администратор создан"}
 
 @router.patch("/{admin_id}", dependencies=[Depends(get_current_admin)])
-async def update_admin(admin_id: int, data: AdminUpdate, db=Depends(get_db)):
+@limiter.limit("10/minute")
+async def update_admin(request: Request, admin_id: int, data: AdminUpdate, db=Depends(get_db)):
     cursor = await db.execute("SELECT username FROM admins WHERE id = ?", (admin_id,))
     row = await cursor.fetchone()
     if not row:
@@ -58,7 +62,8 @@ async def update_admin(admin_id: int, data: AdminUpdate, db=Depends(get_db)):
     return {"message": "Пароль обновлён"}
 
 @router.delete("/{admin_id}", dependencies=[Depends(get_current_admin)])
-async def delete_admin(admin_id: int, db=Depends(get_db)):
+@limiter.limit("10/minute")
+async def delete_admin(request: Request, admin_id: int, db=Depends(get_db)):
     cursor = await db.execute("SELECT username FROM admins WHERE id = ?", (admin_id,))
     row = await cursor.fetchone()
     if not row:

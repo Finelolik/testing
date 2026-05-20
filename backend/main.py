@@ -8,6 +8,8 @@ load_dotenv()
 import aiosqlite
 from contextlib import asynccontextmanager
 
+from slowapi.errors import RateLimitExceeded
+
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -19,6 +21,7 @@ from .models import AdminLogin, TokenResponse
 from .appeals import router as appeals_router
 from .admins import router as admins_router
 from .logging_config import setup_logging
+from .limiter import limiter, rate_limit_exceeded_handler
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
@@ -34,8 +37,14 @@ async def lifespan(app: FastAPI):
     yield
     api_logger.info("Приложение остановлено")
 
-app = FastAPI(title="Портал обращений граждан", lifespan=lifespan)
-
+app = FastAPI(
+    title="Портал обращений граждан",
+    lifespan=lifespan,
+    limiter=limiter
+)
+app.state.limiter = limiter
+# noinspection PyUnresolvedReferences
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)# type: ignore
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://studvpn.alwaysdata.com"],
@@ -62,7 +71,8 @@ app.include_router(appeals_router)
 app.include_router(admins_router)
 
 @app.post("/api/admin/login", response_model=TokenResponse)
-async def admin_login(data: AdminLogin, request: Request, db=Depends(get_db)):
+@limiter.limit("10/minute")
+async def admin_login(request: Request, data: AdminLogin, db=Depends(get_db)):
     cursor = await db.execute(
         "SELECT password_hash FROM admins WHERE username = ?", (data.username,)
     )
