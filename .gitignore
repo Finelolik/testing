@@ -1,19 +1,10 @@
-# Виртуальное окружение
 venv/
-
-# База данных
 appeals.db
-
-# Переменные окружения
 .env
-
-# Python кэш
 __pycache__/
 *.pyc
-
-# Бэкапы
 work-bak/
-
 run.sh
 favicon.ico
 run.ps1
+logs/
