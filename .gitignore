@@ -1,9 +1,13 @@
+__pycache__/
+
 venv/
+logs/
+work-bak/
+
 appeals.db
 .env
-__pycache__/
 *.pyc
-work-bak/
+
 run.sh
+uvirun.ps1
 run.ps1
-logs/
