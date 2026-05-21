@@ -1,6 +1,5 @@
 import os
 import time
-import logging
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -51,6 +50,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+favicon_path = 'favicon.ico'
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(favicon_path)
 
 # --- MIDDLEWARE: логирование всех запросов ---
 @app.middleware("http")
