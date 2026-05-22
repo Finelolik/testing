@@ -3,7 +3,7 @@ import logging.handlers
 import sys
 import os
 
-# Папка для логов (создаётся автоматически)
+# mkdir
 LOG_DIR = os.path.join(os.path.dirname(__file__), "..", "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -16,13 +16,12 @@ def setup_logging():
         datefmt="%Y-%m-%d %H:%M:%S"
     )
 
-    # --- Handler 1: консоль (stdout) ---
+    # stdout
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(formatter)
     console_handler.setLevel(logging.INFO)
 
-    # --- Handler 2: файл с ротацией ---
-    # maxBytes=5MB, backupCount=3 (хранит app.log, app.log.1, app.log.2, app.log.3)
+    # файл с ротацией
     file_handler = logging.handlers.RotatingFileHandler(
         LOG_FILE,
         maxBytes=5 * 1024 * 1024,  # 5 МБ
@@ -32,20 +31,20 @@ def setup_logging():
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
 
-    # --- Основной логгер API ---
+    # основной логгер
     api_logger = logging.getLogger("appeals_api")
     api_logger.setLevel(logging.INFO)
 
-    # Убираем дублирующие handlers при повторном импорте
+    # минус дубл handlers при повторном импорте
     if not api_logger.handlers:
         api_logger.addHandler(console_handler)
         api_logger.addHandler(file_handler)
 
-    # --- Логгер безопасности (админы, удаление, входы) ---
+    # логгер безопасности
     security_logger = logging.getLogger("appeals_api.security")
     security_logger.setLevel(logging.WARNING)
 
-    # Отключаем дублирование логов от uvicorn access (опционально)
+    # минус дубл логов от uviaccess
     uvicorn_access = logging.getLogger("uvicorn.access")
     uvicorn_access.handlers = []
 
